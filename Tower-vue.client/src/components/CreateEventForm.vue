@@ -14,34 +14,47 @@
       type="text"
       placeholder="event location..."
     />
+    <label for="">Event Cover Image</label>
+    <input
+      v-model="editable.coverImg"
+      type="text"
+      placeholder="event cover image..."
+    />
     <label for="">Event Capacity</label>
     <input
       v-model="editable.capacity"
       type="number"
       placeholder="event capacity..."
     />
+
     <button class="btn btn-primary m-5" @click="createEvent()">Submit</button>
   </form>
 </template>
 
 
 <script>
-import { ref } from "@vue/reactivity"
+import { computed, ref } from "@vue/reactivity"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { eventsService } from "../services/EventsService"
+import { Modal } from "bootstrap"
+import { AppState } from "../AppState"
 export default {
   setup() {
     let editable = ref({})
     return {
+      towerEvent: computed(() => AppState.towerEvents),
       editable,
       async createEvent() {
         try {
           const newEvent = await eventsService.createEvent(editable.value)
           router.push({
             name: 'EventDetails',
-            params: { eventId: newEvent.id }
+            params: { newEvent: newEvent }
           })
+          Modal.getOrCreateInstance(
+            document.getElementById("create-event-modal").hide()
+          ).hide()
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')

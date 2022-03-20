@@ -29,5 +29,6 @@ export default {
 
 .tower-icon {
   font-size: 64px;
+  color: #64dfdf;
 }
 </style>

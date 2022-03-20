@@ -48,9 +48,9 @@ export default {
 </script>
 
 <style scoped>
-/* a:hover {
+a:hover {
   text-decoration: none;
-} */
+}
 .nav-link {
   text-transform: uppercase;
 }

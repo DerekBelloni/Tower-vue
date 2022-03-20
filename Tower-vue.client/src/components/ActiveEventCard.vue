@@ -13,7 +13,7 @@
       <h2>{{ activeEvent.name }}</h2>
     </div>
     <div class="col-6 d-flex justify-content-end">
-      <button class="btn btn-primary mt-2 text-dark">
+      <button title="attend event" class="btn btn-primary mt-2 text-dark">
         <b>Attend Event</b>
       </button>
     </div>

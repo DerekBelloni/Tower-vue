@@ -102,12 +102,21 @@ export default {
       async filterEvents(type) {
         try {
           eventsService.filterEvents(type)
-          eventsService.setActiveEvent(AppState.towerEvents.id)
+
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')
         }
-      }
+      },
+
+      // async setActiveEvent() {
+      //   try {
+      //     eventsService.setActiveEvent(AppState.towerEvents.id)
+      //   } catch (error) {
+      //     logger.error(error)
+      //     Pop.toast(error.message, 'error')
+      //   }
+      // }
     }
   }
 }
