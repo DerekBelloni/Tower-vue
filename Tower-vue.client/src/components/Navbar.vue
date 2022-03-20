@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-3">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center"></div>
     </router-link>
@@ -18,7 +18,22 @@
       class="collapse navbar-collapse justify-content-between"
       id="navbarText"
     >
-      <i class="mdi mdi-radio-tower tower-icon">Tower</i>
+      <i class="mdi mdi-radio-tower tower-icon title-font selectable">
+        <span><b>Tower</b></span>
+      </i>
+      <div>
+        <button
+          class="btn btn-primary-outline title-font"
+          data-bs-toggle="modal"
+          data-bs-target="#create-event-modal"
+        >
+          Create Event
+        </button>
+      </div>
+      <Modal id="create-event-modal">
+        <template #modal-title class="text-primary">Create an Event!</template>
+        <template #modal-body><CreateEventForm /></template>
+      </Modal>
       <Login />
     </div>
   </nav>
@@ -33,9 +48,9 @@ export default {
 </script>
 
 <style scoped>
-a:hover {
+/* a:hover {
   text-decoration: none;
-}
+} */
 .nav-link {
   text-transform: uppercase;
 }
@@ -45,6 +60,12 @@ a:hover {
   border-bottom-right-radius: 0;
 }
 .tower-icon {
-  font-size: 64px;
+  color: #64dfdf;
+  font-size: 70px;
+}
+
+.title-font {
+  color: #64dfdf;
+  font-family: "Pacifico", cursive;
 }
 </style>
