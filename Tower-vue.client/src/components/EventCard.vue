@@ -41,7 +41,7 @@ export default {
     return {
       myEvent: computed(() => AppState.myEvents),
       towerEvents: computed(() => AppState.towerEvents),
-      setActiveEvent() {
+      async setActiveEvent() {
         eventsService.setActiveEvent(props.towerEvent.id)
       }
     }

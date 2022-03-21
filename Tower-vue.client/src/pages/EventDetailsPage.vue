@@ -7,7 +7,7 @@
       <div class="col-12 bg-primary rounded text-dark">
         <h2>Event Attendees Template</h2>
         <img
-          class="img"
+          class="img m-2"
           src="https://media.istockphoto.com/photos/sea-otter-british-columbia-picture-id507171882?b=1&k=20&m=507171882&s=170667a&w=0&h=j6RDmP-Gz0M9xG1JYPy8QMlXjdPCzOjFV_vi0GjvCyU="
           alt=""
         />
@@ -39,17 +39,49 @@
       </div>
     </div>
     <div class="container mt-5">
-      <div class="row justify-content-between">
+      <div class="row justify-content-between bg-primary rounded">
         <div class="col-2 bg-primary rounded p-3">
           <img
-            class="img"
+            class="img m-2w"
             src="https://media.istockphoto.com/photos/sea-otter-british-columbia-picture-id507171882?b=1&k=20&m=507171882&s=170667a&w=0&h=j6RDmP-Gz0M9xG1JYPy8QMlXjdPCzOjFV_vi0GjvCyU="
             alt=""
           />
         </div>
-        <div class="col-8">
-          <h2>Chomps the Otter</h2>
-          <h4>Where are the clams my guy?</h4>
+        <div
+          class="
+            col-2
+            bg-primary
+            d-flex
+            justify-content-around
+            align-items-center
+          "
+        >
+          <h4>Chomps the Otter</h4>
+        </div>
+        <div
+          class="
+            col-8
+            bg-primary
+            d-flex
+            justify-content-around
+            align-items-center
+            rounded
+          "
+        >
+          <div
+            class="
+              container
+              bg-dark
+              text-light
+              rounded
+              d-flex
+              align-items-center
+              p-2
+            "
+          >
+            <p>Where are the clams my guy?</p>
+            <p></p>
+          </div>
         </div>
       </div>
     </div>
@@ -60,8 +92,11 @@
 <script>
 import { computed } from "@vue/reactivity"
 import { AppState } from "../AppState"
+import { useRoute } from "vue-router"
 export default {
   setup() {
+    const route = useRoute()
+
     return {
       activeEvent: computed(() => AppState.activeEvent),
       account: computed(() => AppState.account)

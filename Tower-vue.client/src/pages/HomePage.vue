@@ -70,7 +70,7 @@
     <div class="row mt-3 mx-1 justify-content-between">
       <div
         class="col-md-4 card bg-dark rounded py-2 px-2 card-style card-border"
-        v-for="t in towerEvents"
+        v-for="t in towerEvent"
         :key="t.id"
       >
         <EventCard :towerEvent="t" />
@@ -98,7 +98,7 @@ export default {
       }
     })
     return {
-      towerEvents: computed(() => AppState.towerEvents),
+      towerEvent: computed(() => AppState.towerEvents),
       async filterEvents(type) {
         try {
           eventsService.filterEvents(type)
@@ -107,16 +107,9 @@ export default {
           logger.error(error)
           Pop.toast(error.message, 'error')
         }
-      },
+      }
 
-      // async setActiveEvent() {
-      //   try {
-      //     eventsService.setActiveEvent(AppState.towerEvents.id)
-      //   } catch (error) {
-      //     logger.error(error)
-      //     Pop.toast(error.message, 'error')
-      //   }
-      // }
+
     }
   }
 }

@@ -26,6 +26,14 @@
       type="number"
       placeholder="event capacity..."
     />
+    <label for="">Event Start Date</label>
+    <input
+      v-model="editable.startDate"
+      type="date"
+      placeholder="event start date..."
+    />
+    <label for="">Event Type</label>
+    <input v-model="editable.type" type="text" placeholder="event type..." />
 
     <button class="btn btn-primary m-5" @click="createEvent()">Submit</button>
   </form>

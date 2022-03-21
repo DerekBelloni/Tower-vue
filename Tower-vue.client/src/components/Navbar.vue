@@ -18,11 +18,12 @@
       class="collapse navbar-collapse justify-content-between"
       id="navbarText"
     >
-      <i class="mdi mdi-radio-tower tower-icon title-font selectable">
+      <i class="mdi mdi-radio-tower tower-icon title-font">
         <span><b>Tower</b></span>
       </i>
       <div>
         <button
+          title="create event"
           class="btn btn-primary-outline title-font"
           data-bs-toggle="modal"
           data-bs-target="#create-event-modal"
@@ -31,9 +32,14 @@
         </button>
       </div>
       <Modal id="create-event-modal">
-        <template #modal-title class="text-primary">Create an Event!</template>
+        <template #modal-title class="text-dark">Create an Event!</template>
         <template #modal-body><CreateEventForm /></template>
       </Modal>
+      <router-link :to="{ name: 'Home' }">
+        <button title="go home" class="btn btn-primary-outline title-font">
+          Go Home
+        </button>
+      </router-link>
       <Login />
     </div>
   </nav>
