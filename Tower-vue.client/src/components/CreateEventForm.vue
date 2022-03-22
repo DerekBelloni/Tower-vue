@@ -47,21 +47,24 @@ import Pop from "../utils/Pop"
 import { eventsService } from "../services/EventsService"
 import { Modal } from "bootstrap"
 import { AppState } from "../AppState"
+import { useRoute, useRouter } from "vue-router"
+import { router } from "../router"
 export default {
   setup() {
+    const router = useRouter()
     let editable = ref({})
     return {
       towerEvent: computed(() => AppState.towerEvents),
       editable,
       async createEvent() {
         try {
-          const newEvent = await eventsService.createEvent(editable.value)
+          let newEvent = await eventsService.createEvent(editable.value)
           router.push({
             name: 'EventDetails',
-            params: { newEvent: newEvent }
+            params: { eventId: AppState.activeEvent.id }
           })
           Modal.getOrCreateInstance(
-            document.getElementById("create-event-modal").hide()
+            document.getElementById("create-event-modal")
           ).hide()
         } catch (error) {
           logger.error(error)

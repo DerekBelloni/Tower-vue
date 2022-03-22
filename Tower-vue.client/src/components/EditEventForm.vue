@@ -2,45 +2,59 @@
   <div class="component">
     <form class="d-flex flex-column">
       <label for="">Event Name</label>
-      <input v-model="editable.name" type="text" placeholder="event name..." />
+      <input
+        type="text"
+        placeholder="event name..."
+        required
+        v-model="editable.name"
+      />
       <label for="">Event Description</label>
       <input
-        v-model="editable.description"
         type="text"
         placeholder="event description..."
-      />
-      <label for="">Event Location</label>
-      <input
-        v-model="editable.location"
-        type="text"
-        placeholder="event location..."
-      />
-      <label for="">Event Cover Image</label>
-      <input
-        v-model="editable.coverImg"
-        type="text"
-        placeholder="event cover image..."
-      />
-      <label for="">Event Capacity</label>
-      <input
-        v-model="editable.capacity"
-        type="number"
-        placeholder="event capacity..."
+        required
+        v-model="editable.description"
       />
 
-      <button class="btn btn-primary m-5" @click="editEvent()">Submit</button>
+      <button class="btn btn-primary m-5" @click="editEvent(activeEvent.id)">
+        Submit
+      </button>
     </form>
   </div>
 </template>
 
 
 <script>
-import { ref } from "@vue/reactivity"
+import { computed, ref } from "@vue/reactivity"
+import { AppState } from "../AppState"
+import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
+import { eventsService } from "../services/EventsService"
+import { Modal } from "bootstrap"
 export default {
-  setup() {
-    editable = ref({})
+  props: {
+    activeEvent: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props) {
+    const editable = ref({})
     return {
-      editable
+      editable,
+      activeEvent: computed(() => AppState.activeEvent),
+      async editEvent(activeEventId) {
+        try {
+          await eventsService.editEvent(activeEventId, editable.value)
+          Modal.getOrCreateInstance(
+            document.getElementById("edit-event-modal")
+          ).hide()
+
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      }
     }
   }
 }

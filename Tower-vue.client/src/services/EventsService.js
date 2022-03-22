@@ -24,11 +24,18 @@ class EventsService {
 
   }
 
+  async editEvent(eventId, body) {
+    const res = await api.put('api/events/' + eventId, body)
+    logger.log(res.data)
+    AppState.activeEvent = res.data
+  }
+
   async attendEvent(ticketData) {
     logger.log(AppState.activeEvent.capacity)
     const res = await api.post('api/tickets', ticketData)
     logger.log('[new ticket]', res.data)
     AppState.myEvents.unshift(res.data)
+    AppState.tickets.unshift(res.data)
     logger.log('[My new event]', res.data)
     logger.log('event capacity after purchase', AppState.activeEvent.capacity)
   }
@@ -36,6 +43,7 @@ class EventsService {
   async createEvent(body) {
     const res = await api.post('api/events', body)
     logger.log('new event', res.data)
+    AppState.activeEvent = res.data
     AppState.towerEvents.unshift(res.data)
 
   }
