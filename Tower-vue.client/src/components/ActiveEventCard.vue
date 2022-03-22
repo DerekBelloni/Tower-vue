@@ -17,6 +17,7 @@
         title="attend event"
         class="btn btn-primary mt-2 text-dark"
         v-if="activeEvent.capacity > 0 && activeEvent.isCanceled == false"
+        @click="attendEvent()"
       >
         <b>Attend Event</b>
       </button>
@@ -44,15 +45,16 @@
                 Edit Event
                 <i
                   class="mdi mdi-pencil selectable"
-                  v-if="
-                    activeEvent.capacity > 0 &&
-                    activeEvent.isCanceled == false &&
-                    account.id == activeEvent.creatorId
-                  "
+                  v-if="activeEvent.isCanceled == false"
                 ></i>
               </h6>
             </div>
-            <div v-if="account.id == activeEvent.creatorId">
+            <div
+              v-if="
+                account.id == activeEvent.creatorId &&
+                activeEvent.isCanceled == false
+              "
+            >
               <h6>
                 Cancel Event
                 <i class="mdi mdi-cancel selectable" @click="cancelEvent()"></i>
@@ -81,8 +83,22 @@ export default {
     return {
       activeEvent: computed(() => AppState.activeEvent),
       account: computed(() => AppState.account),
+      attendableEvent: computed(() => AppState.activeEvent.capacity > 0 || AppState.activeEvent.isCanceled == false),
+      hasTicket: computed(() =>
+        AppState.tickets.find((t) => t.ticketId == AppState.account.id)),
+
       async cancelEvent() {
         await eventsService.cancelEvent(AppState.activeEvent.id)
+      },
+
+      async attendEvent() {
+        let newTicket = {
+          accountId: AppState.account.id,
+          eventId: AppState.activeEvent.id,
+        };
+        AppState.activeEvent.capacity--
+        eventsService.attendEvent(newTicket)
+
       }
 
     }

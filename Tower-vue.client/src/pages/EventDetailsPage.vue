@@ -2,7 +2,12 @@
   <div class="container mt-3 mb-5 card-border rounded">
     <ActiveEventCard />
   </div>
-  <EventCommentsCard />
+  <div class="container mt-3 mb-5 card-border rounded">
+    <TicketHolders />
+  </div>
+  <div class="container mt-3 mb-5 card-border rounded">
+    <EventCommentsCard :activeEvent="activeEvent" />
+  </div>
 </template>
 
 
@@ -10,10 +15,16 @@
 import { computed } from "@vue/reactivity"
 import { AppState } from "../AppState"
 import { useRoute } from "vue-router"
+import { onMounted } from "@vue/runtime-core"
+import { eventsService } from "../services/EventsService"
 export default {
   setup() {
     const route = useRoute()
-
+    onMounted(async () => {
+      if (route.params.eventId) {
+        await eventsService.setActiveEvent(route.params.eventId)
+      }
+    })
     return {
       activeEvent: computed(() => AppState.activeEvent),
       account: computed(() => AppState.account)

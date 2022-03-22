@@ -28,11 +28,7 @@
           rounded
         "
       >
-        <h4
-          class="selectable category-border"
-          title="all"
-          @click="filterEvents('')"
-        >
+        <h4 class="selectable category-border" title="all" @click="getEvents()">
           All
         </h4>
         <h4
@@ -103,6 +99,15 @@ export default {
         try {
           eventsService.filterEvents(type)
 
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
+
+      async getEvents() {
+        try {
+          await eventsService.getEvents()
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')

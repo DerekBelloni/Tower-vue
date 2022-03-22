@@ -17,25 +17,35 @@ class EventsService {
   }
 
   async filterEvents(type) {
-    const res = await api.get('api/events')
-    AppState.towerEvents = AppState.towerEvents.filter(t => t.type == type)
+    const res = await api.get('api/events/?type=' + type)
+    logger.log(res.data)
+    AppState.towerEvents = res.data
 
 
+  }
+
+  async attendEvent(ticketData) {
+    logger.log(AppState.activeEvent.capacity)
+    const res = await api.post('api/tickets', ticketData)
+    logger.log('[new ticket]', res.data)
+    AppState.myEvents.unshift(res.data)
+    logger.log('[My new event]', res.data)
+    logger.log('event capacity after purchase', AppState.activeEvent.capacity)
   }
 
   async createEvent(body) {
     const res = await api.post('api/events', body)
     logger.log('new event', res.data)
     AppState.towerEvents.unshift(res.data)
-    // AppState.activeEvent = res.data
+
   }
 
   async cancelEvent(id) {
     let eventToCancel = AppState.towerEvents.find(t => t.id == id)
-    logger.log('event to cancel is', eventToCancel.isCanceled)
-    eventToCancel.isCanceled = !eventToCancel.isCanceled
-    const res = await api.put('api/events/' + id, eventToCancel.isCanceled)
+    // eventToCancel.isCanceled = !eventToCancel.isCanceled
+    const res = await api.delete('api/events/' + id, eventToCancel)
     logger.log('event is canceled', res.data)
+    eventToCancel = res.data
 
   }
 }

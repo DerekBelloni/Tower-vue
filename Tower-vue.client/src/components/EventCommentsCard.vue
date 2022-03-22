@@ -1,12 +1,13 @@
 <template>
   <div class="container mt-5">
     <div class="row justify-content-center">
-      <div class="col-12 bg-primary text-dark rounded-top">
+      <div class="col-md-12 bg-primary text-dark rounded-top">
         <h2>Event Comments Template</h2>
-        <form @submit.prevent="createPost">
+        <form>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Leave a Comment</label>
             <textarea
+              v-model="editable.body"
               name="body"
               class="form-control mb-3"
               id="exampleFormControlTextarea1"
@@ -16,21 +17,27 @@
           </div>
         </form>
       </div>
-      <div class="col-12 d-flex justify-content-end bg-primary rounded-bottom">
-        <button title="submit" class="btn btn-primary rounded-pill shadow m-2">
+      <div
+        class="col-md-12 d-flex justify-content-end bg-primary rounded-bottom"
+      >
+        <button
+          title="submit"
+          class="btn btn-dark rounded-pill shadow m-2 text-light"
+          @click.prevent="createComment()"
+        >
           Submit
         </button>
       </div>
     </div>
   </div>
   <div class="container mt-5">
-    <div class="row justify-content-between bg-primary rounded comment-border">
-      <div class="col-2 bg-primary rounded p-3">
-        <img
-          class="img m-2w"
-          src="https://media.istockphoto.com/photos/sea-otter-british-columbia-picture-id507171882?b=1&k=20&m=507171882&s=170667a&w=0&h=j6RDmP-Gz0M9xG1JYPy8QMlXjdPCzOjFV_vi0GjvCyU="
-          alt=""
-        />
+    <div
+      class="row justify-content-between bg-primary rounded m-3"
+      v-for="c in comments"
+      :key="c.id"
+    >
+      <div class="col-md-2 bg-primary rounded p-3">
+        <img class="img m-2w" :src="c.creator.picture" alt="" />
       </div>
       <div
         class="
@@ -41,11 +48,11 @@
           align-items-center
         "
       >
-        <h4>Chomps the Otter</h4>
+        <h6>{{ c.creator.name }}</h6>
       </div>
       <div
         class="
-          col-8
+          col-md-6
           bg-primary
           d-flex
           justify-content-around
@@ -63,11 +70,16 @@
             align-items-center
             p-2
             comment-border
+            justify-content-between
           "
         >
-          <p>Where are the clams my guy?</p>
-          <p></p>
+          <p>{{ c.body }}</p>
         </div>
+        <i
+          class="mdi mdi-delete-forever p-2 selectable"
+          title="delete comment"
+          @click="deleteComment(c.id)"
+        ></i>
       </div>
     </div>
   </div>
@@ -75,9 +87,53 @@
 
 
 <script>
+import { computed, ref } from "@vue/reactivity"
+import { useRoute } from "vue-router"
+import { AppState } from "../AppState"
+import { commentsService } from "../services/CommentsService"
+import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
+import { onMounted } from "@vue/runtime-core"
+import { applyStyles } from "@popperjs/core"
 export default {
-  setup() {
-    return {}
+  props: {
+    activeEvent: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props) {
+    const route = useRoute()
+    let editable = ref({})
+    onMounted(async () => {
+      await commentsService.getComments(route.params.eventId)
+    })
+    return {
+      editable,
+      comments: computed(() => AppState.comments),
+      account: computed(() => AppState.account),
+      activeEvent: computed(() => AppState.activeEvent),
+      async createComment() {
+        try {
+          editable.value.eventId = props.activeEvent.id
+          await commentsService.createComment(editable.value, route.params.eventId)
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
+
+      async deleteComment(commentId) {
+        try {
+          if (await Pop.confirm('Are You Sure?')) {
+            await commentsService.deleteComment(commentId)
+          }
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      }
+    }
   }
 }
 </script>
@@ -88,7 +144,9 @@ export default {
   border: #c9fbff solid 2px;
   background-color: #1b263b;
 }
-
+.submit-button {
+  color: #64dfdf;
+}
 .comment-border {
   border: #64dfdf solid 2px;
 }

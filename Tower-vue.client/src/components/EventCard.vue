@@ -18,7 +18,7 @@
       </h1>
       <h3 class="text-start">{{ towerEvent.location }}</h3>
       <h3 class="text-start">
-        {{ Date(towerEvent.startDate).toLocaleString() }}
+        {{ new Date(towerEvent.startDate).toDateString() }}
       </h3>
       <h3 class="text-start">Tickets Remaining: {{ towerEvent.capacity }}</h3>
     </div>
@@ -41,6 +41,7 @@ export default {
     return {
       myEvent: computed(() => AppState.myEvents),
       towerEvents: computed(() => AppState.towerEvents),
+
       async setActiveEvent() {
         eventsService.setActiveEvent(props.towerEvent.id)
       }

@@ -36,7 +36,11 @@
         <template #modal-body><CreateEventForm /></template>
       </Modal>
       <router-link :to="{ name: 'Home' }">
-        <button title="go home" class="btn btn-primary-outline title-font">
+        <button
+          title="go home"
+          class="btn btn-primary-outline title-font"
+          @click="getEvents()"
+        >
           Go Home
         </button>
       </router-link>
@@ -46,9 +50,22 @@
 </template>
 
 <script>
+import { eventsService } from "../services/EventsService";
+import { logger } from "../utils/Logger";
+import Pop from "../utils/Pop";
 export default {
+
   setup() {
-    return {};
+    return {
+      async getEvents() {
+        try {
+          await eventsService.getEvents()
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      }
+    };
   },
 };
 </script>
