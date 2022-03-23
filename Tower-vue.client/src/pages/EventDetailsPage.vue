@@ -2,12 +2,10 @@
   <div class="container mt-3 mb-5 card-border rounded">
     <ActiveEventCard />
   </div>
-  <div
-    class="container mt-3 mb-5 card-border rounded"
-    v-for="t in tickets"
-    :key="t.id"
-  >
+  <div class="container mt-3 mb-5 card-border rounded">
     <TicketHolders :tickets="t" />
+    <!-- v-for="t in tickets"
+    :key="t.id" -->
   </div>
   <div class="container mt-3 mb-5 card-border rounded">
     <EventCommentsCard :activeEvent="activeEvent" />

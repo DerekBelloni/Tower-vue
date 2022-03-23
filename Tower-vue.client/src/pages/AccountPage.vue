@@ -62,9 +62,8 @@ export default {
       activeEvent: computed(() => AppState.activeEvent),
       async deleteTicket(ticketId) {
         try {
-          // const increaseCapacity = AppState.myTickets.find(m => m.ticketId == ticketId)
-          // increaseCapacity.capacity++
-          await ticketsService.deleteTicket(ticketId)
+          if (await Pop.confirm('Are You Sure You Want To Cancel This Ticket?'))
+            await ticketsService.deleteTicket(ticketId)
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')

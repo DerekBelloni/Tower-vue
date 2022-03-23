@@ -1,8 +1,8 @@
 <template>
   <h2>Who's attending this event</h2>
   <div class="row">
-    <div class="col-12">
-      <img class="img" :src="tickets.picture" alt="" :title="tickets.name" />
+    <div class="col-2 d-flex flex-column" v-for="t in tickets" :key="t.id">
+      <img class="img" :src="t.picture" alt="" :title="t.name" />
     </div>
   </div>
 </template>
@@ -10,16 +10,17 @@
 
 <script>
 import { computed } from "@vue/reactivity"
+import { AppState } from "../AppState"
 export default {
-  props: {
-    tickets: {
-      type: Object,
-      required: true
-    },
-  },
+  // props: {
+  //   tickets: {
+  //     type: Object,
+  //     required: true
+  //   },
+  // },
   setup() {
     return {
-
+      tickets: computed(() => AppState.tickets)
     }
   }
 }
