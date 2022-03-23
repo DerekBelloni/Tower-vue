@@ -12,12 +12,6 @@
 import { computed } from "@vue/reactivity"
 import { AppState } from "../AppState"
 export default {
-  // props: {
-  //   tickets: {
-  //     type: Object,
-  //     required: true
-  //   },
-  // },
   setup() {
     return {
       tickets: computed(() => AppState.tickets)
