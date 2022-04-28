@@ -43,8 +43,8 @@ class EventsService {
   async createEvent(body) {
     const res = await api.post('api/events', body)
     logger.log('new event', res.data)
-    AppState.activeEvent = res.data
     AppState.towerEvents.unshift(res.data)
+    AppState.activeEvent = res.data
 
   }
 
